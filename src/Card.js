@@ -1,18 +1,47 @@
 import { useState } from "react";
 
-function Card() {
+function Card({ player, setPlayer }) {
   const [githubUserLogin, setGithubUserLogin] = useState("");
-  const [githubUser, setGithubUser] = useState();
 
-  return githubUser ? (
+  return player ? (
     <figure className="card">
-      <img
-        className="card-img"
-        src={githubUser.avatar_url}
-        alt={githubUser.login}
-      />
+      <img className="card-img" src={player.avatar_url} alt={player.login} />
       <figcaption className="card-content">
-        <h1>{githubUser.login}</h1>
+        <h1>{player.login}</h1>
+        {player.weapon ? (
+          player[player.weapon]
+        ) : (
+          <div>
+            <button
+              onClick={() => {
+                setPlayer({ ...player, weapon: "public_repos" });
+              }}
+            >
+              Re
+            </button>
+            <button
+              onClick={() => {
+                setPlayer({ ...player, weapon: "public_gists" });
+              }}
+            >
+              Gi
+            </button>
+            <button
+              onClick={() => {
+                setPlayer({ ...player, weapon: "followers" });
+              }}
+            >
+              Fwer
+            </button>
+            <button
+              onClick={() => {
+                setPlayer({ ...player, weapon: "following" });
+              }}
+            >
+              Fing
+            </button>
+          </div>
+        )}
       </figcaption>
     </figure>
   ) : (
@@ -28,7 +57,7 @@ function Card() {
           fetch(`https://api.github.com/users/${githubUserLogin}`)
             .then((response) => response.json())
             .then((data) => {
-              setGithubUser(data);
+              setPlayer(data);
             });
         }}
       >
